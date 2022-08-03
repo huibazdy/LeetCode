@@ -83,6 +83,10 @@ int climbStairs(int n)
 }
 ```
 
+提交结果：
+
+<img src="https://raw.githubusercontent.com/huibazdy/TyporaPicture/main/202208031128298.png" alt="image-20220803112801260" style="zoom: 67%;" />
+
 
 
 ### 方法三：动态规划
