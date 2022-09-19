@@ -24,9 +24,7 @@ flowchart TB
 
     树的高度就是root（A）的高度，A的最深子节点有很多个，以H为例，A到H的路径长度是3，所以A的高度是3，树的高度也是3。
 
-
-
-
+* ***二叉搜索树***（Binary Search Tree，***BST***）
 
 
 
