@@ -45,6 +45,41 @@ flowchart TB
 
 ## 二叉树中序遍历（94）
 
+左子树---根节点---右子树顺序访问，对于左子树和右子树用同样的顺序访问，直到遍历完整棵树。整个遍历过程有天然递归性质，定义一个递归函数`inorder(root)`表示当前遍历到root节点的答案，我们只需要递归调用`inorder(root.left)`可以得到左子树中序遍历结果，`inorder(root.right)`得到右子树遍历结果，然后将`root.val`插入两个结果当中即可。
+
+递归终止条件是碰到空节点。
+
+### 递归
+
+```C++
+void inorder(TreeNode* root,vector<int> &res)
+{
+    if(!root)
+        return;
+    
+    inorder(root->left.res);
+    res.push_back(root->val);
+    inorder(root->right.res);
+}
+
+vector<int> inorderTraversal(TreeNode* root)
+{
+    vector<int> res;
+    inorder(root,res);
+    return res;
+}
+```
+
+时间复杂度：`O(n)`，n为二叉树节点个数。
+
+空间复杂度：`O(n)`，空间复杂度取决于递归的栈深度，栈深度在二叉树为一条链的极端情况下会达到`O(n)`级别。
+
+
+
+### 非递归（迭代）
+
+
+
 
 
 ## 二叉树前序遍历（144）
