@@ -8,8 +8,8 @@
 | 21   | 合并两个有序链表          | E    |              |          |
 | 23   | 合并 K 个升序链表         | H    |              |          |
 | 114  | 将二叉树展开为链表        | M    |              |          |
-| 141  | 环形链表 1                | E    |              |          |
-| 142  | 环形链表 2                | M    |              |          |
+| 141  | 是否有环                  | E    |              |          |
+| 142  | 环形链表入口              | M    |              |          |
 | 148  | 排序链表                  | M    |              |          |
 | 160  | 相交链表                  | E    |              |          |
 | 206  | 反转链表                  | E    |              |          |
@@ -59,4 +59,27 @@ ListNode* reverseList(ListNode* head)
 ```
 
 
+
+**环形链表**
+
+> **怎样描述一个链表有环？**
+
+遍历过程中，`next` 指针再次到达某个节点。使用整数`pos`来表示链表尾部连接到链表中的位置。
+
+> **快慢指针**
+
+```c++
+ListNode* hasCycle(ListNode* head) {
+    if(head == nullptr)return false;
+    ListNode* fast = new ListNode;
+    ListNode* slow = new ListNode;
+    while(fast != nullptr && fast->next != nullptr){
+        slow = slow->next;
+        fast = fast->next->next;
+        if(slow == fast)
+            return true;
+    }
+    re
+}
+```
 
