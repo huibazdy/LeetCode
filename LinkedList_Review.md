@@ -34,24 +34,25 @@ struct ListNode
 
 **反转链表**
 
+> 核心思想：将原链表从头至尾依次插入一个空的新链表，返回新链表的头结点即可
+
 ```c++
-/*
-**   头插法反转链表
-*/
+/*  头插法反转链表 */
+
 ListNode* reverseList(ListNode* head)
 {
-    if(head == nullptr || head->next == nullptr) //头指针为空或只有一个节点
+    if(head == nullptr || head->next == nullptr) //头指针为空或只有一个节点，无需反转
         return head;
     
-    ListNode* dummy = new ListNode(0,head); //用于找到反转后链表头结点的哑结点
-    ListNide* tmp = new ListNode;  //辅助指针，用于记录反转进度（或者说新链表的插入位置）；
-    tmp = nullptr;  //第一个被反转的节点应该插在dummy之后，nullptr之前，所以需要将tmp记为nullptr
+    ListNode* dummy = new ListNode(0,nullptr); //用于找到反转后链表头结点的哑结点
+    ListNide* tmp = new ListNode;  //辅助指针，原链表待插入节点在新链表中的插入位置
+    tmp = nullptr;  //插入的第一个节点应插在dummy后，nullptr前，故将tmp初始化为nullptr
     
-    while(head != nullptr){
+    while(head != nullptr){      //head 指向的是原链表下一个待插入节点
         dummy->next = head;      //插入节点到新链表（即：反转后的链表）
         head = head->next;       //更新 head，head 始终指向未反转部分的头结点
         dummy->next->next = tmp; //断开以插入新链表节点和之前链表的联系，借助 tmp
-        tmp = dummy->next;       //更新原链表下一节点在新链表中的插入位置
+        tmp = dummy->next;       //更新原链表待插入节点在新链表中的插入位置
     }
     return dummy->next;
 }
