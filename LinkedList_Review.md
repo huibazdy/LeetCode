@@ -79,7 +79,7 @@ ListNode* hasCycle(ListNode* head) {
         if(slow == fast)
             return true;
     }
-    re
+    return false;
 }
 ```
 
