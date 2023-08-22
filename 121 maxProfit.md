@@ -44,7 +44,8 @@ int maxProfit(vector<int>& prices){
 
 ```c++
 int maxProfit(vector<int>& prices) {
-    int low = INT_MAX;
+    if(prices.size() == 0)return 0;
+    int low = prices[0];
     int res = 0;
     for(int i = 0; i < prices.size(); i++){
         low = min(low, prices[i]);        //找到左边最小值
@@ -56,7 +57,7 @@ int maxProfit(vector<int>& prices) {
 
 执行结果：
 
-<img src="https://raw.githubusercontent.com/huibazdy/TyporaPicture/main/image-20230822164711536.png" alt="image-20230822164711536" style="zoom:50%;" />
+<img src="https://raw.githubusercontent.com/huibazdy/TyporaPicture/main/image-20230822165242290.png" alt="image-20230822165242290" style="zoom:50%;" />
 
 
 
