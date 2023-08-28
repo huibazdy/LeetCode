@@ -85,3 +85,25 @@ vector<vector<int>> combine(int n, int k) {
 }
 ```
 
+
+
+## 对回溯的一些思考
+
+
+
+```c++
+// 递归的回溯函数：代表的是一个纵向重复搜索的过程
+void backtracking(args) {                        // 接受哪些参数？         
+    if(terminate_condition){                     // 搜索结束的条件？
+        res.push_back();                         //add to result vector
+        return;
+    }
+    // 每一条纵向搜索的路径，在某一层都会有一些元素需要横向遍历,遍历区间应该为: [start,n]
+    for(int i = start; i <= n; i++){
+        path.push_back(i);              // 处理当前遍历到的节点
+        back_tracking(n,k,i+1);        // 选择下一个元素继续向下回溯
+        path.pop_back();               // 弹出已经加入的元素
+    }
+}
+```
+
