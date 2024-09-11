@@ -16,6 +16,26 @@ typedef struct BinaryTreeNode{
 }TreeNode;
 ```
 
+## 二叉树的最大深度
+
+> 【**递归**】经典递归问题，学习递归思想
+
+```c++
+int maxDepth(TreeNode* root)
+{
+    if(!root)
+        return 0;
+    //求出左子树的最大深度
+    int leftDepth = maxDepth(root->left);
+    //求出右子树的最大深度
+    int rightDepth = maxDepth(root->right);
+    //熟的最大深度为左右子树最大深度的较大值加1
+    return max(leftDepth, rightDepth) + 1;
+}
+```
+
+通过网站：https://pythontutor.com/ 来可视化递归过程。
+
 
 
 ## 相同的树
@@ -57,6 +77,6 @@ bool checkSame(TreeNode* p, TreeNode* q)
 
 bool isSymmetric(TreeNode* root)
 {
-    return checkSame(root);
+    return checkSame(root,root);
 }
 ```
