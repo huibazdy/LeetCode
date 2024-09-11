@@ -80,3 +80,13 @@ bool isSymmetric(TreeNode* root)
     return checkSame(root,root);
 }
 ```
+
+
+
+```c++
+bool isSymmetric(TreeNode* root)
+{
+    return isSameTree(root->left,root->right); 
+}
+```
+
