@@ -84,6 +84,16 @@ bool isSymmetric(TreeNode* root)
 
 
 ```c++
+bool isSameTree(TreeNode* p, TreeNode* q)
+{
+    if(!p && !q)
+        return true;
+    else if(!p || !q)
+        return flase;
+    else
+        return p->val==q->val && isSameTree(p->left,q->right && isSameTree(p->right,q->left);
+}
+//注意此处的“same”是左子树等于右子树（因为是在同一棵树中bi'jiao），而不是左右分别相等（不同的两棵树比较）
 bool isSymmetric(TreeNode* root)
 {
     return isSameTree(root->left,root->right); 
