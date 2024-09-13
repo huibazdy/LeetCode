@@ -1,8 +1,6 @@
 # 树合集
 
-> 树节点的定义
-
-
+## 树节点的定义
 
 ```c++
 typedef struct BinaryTreeNode{
@@ -15,6 +13,8 @@ typedef struct BinaryTreeNode{
     	val(x), left(le), right(ri) {}
 }TreeNode;
 ```
+
+
 
 ## 二叉树的最大深度
 
@@ -93,10 +93,118 @@ bool isSameTree(TreeNode* p, TreeNode* q)
     else
         return p->val==q->val && isSameTree(p->left,q->right && isSameTree(p->right,q->left);
 }
-//注意此处的“same”是左子树等于右子树（因为是在同一棵树中bi'jiao），而不是左右分别相等（不同的两棵树比较）
+//注意此处的“same”是左子树等于右子树（因为是在同一棵树中比较子树），而不是左右分别相等（不同的两棵树比较）
 bool isSymmetric(TreeNode* root)
 {
     return isSameTree(root->left,root->right); 
 }
 ```
+
+
+
+## 翻转二叉树
+
+> 递归思路：
+>
+> 1. 对整颗树作镜像，就是对根节点的的左右子树作镜像；
+> 2. 接着继续向下，分别对 `root->left` 和`root->right`作镜像翻转；
+> 3. ...
+> 4. 直到最后一层叶子节点分别作镜像反转（交换）；
+
+
+
+```c++
+TreeNode* invertTree(TreeNode* root)
+{
+    if(!root || !(root->left) && !(root->right)) //没有节点或只有一个节点
+        return root;
+    
+    TreeNode* tmp = root->left;
+    root->left = root->right;
+    root->right = tmp;
+    
+    invertTree(root->left);  // 翻转左子树
+    invertTree(root->right); // 翻转右子树
+    
+    return root;
+}
+```
+
+执行结果：
+
+<img src="https://raw.githubusercontent.com/huibazdy/TyporaPicture/main/202409131041875.png" alt="image-20240913104118639" style="zoom: 50%;" />
+
+图解：
+
+```mermaid
+flowchart TB
+	A1((1))
+	
+	A1---A2((2))
+	A1---A3((3))
+	
+	A2---A4((4))
+	A2---A5((5))
+	A3---A6((6))
+	A3---A7((7))
+```
+
+第一次递归后：
+
+```mermaid
+flowchart TB
+	A1((1))
+	
+	A1---A2((3))
+	A1---A3((2))
+	style A2 fill:#f96
+	style A3 fill:#09f
+	
+	A2---A4((4))
+	A2---A5((5))
+	A3---A6((6))
+	A3---A7((7))
+```
+
+第二次递归后
+
+```mermaid
+flowchart TB
+	A1((1))
+	
+	A1---A2((3))
+	A1---A3((2))
+	
+	
+	A2---A4((5))
+	A2---A5((4))
+	style A4 fill:#f96
+	style A5 fill:#09f
+	A3---A6((7))
+	A3---A7((6))
+	style A6 fill:#f96
+	style A7 fill:#09f
+```
+
+最后一次递归，以root为对称轴
+
+```mermaid
+flowchart TB
+	A1((1))
+	
+	A1---A2((3))
+	A1---A3((2))
+	
+	
+	A2---A4((5))
+	A2---A5((4))
+	style A4 fill:#f96
+	style A5 fill:#09f
+	A3---A6((7))
+	A3---A7((6))
+	style A6 fill:#f96
+	style A7 fill:#09f
+```
+
+
 
