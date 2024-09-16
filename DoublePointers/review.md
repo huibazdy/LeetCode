@@ -11,7 +11,7 @@ bool isPalindrome(string s)
     string r;  // 用于存储筛选过后的字符串
     for(char ch : s){
         if(isalnum(ch)) // 判断是否为字母或数字
-            r.push_back(tolower(ch);  // 转为小写字母并插入新字符串
+            r.push_back(tolower(ch));  // 转为小写字母并插入新字符串
     }
     
     int i = 0;
@@ -45,15 +45,24 @@ bool isPalindrome(string s)
 
 * 子序列：原字符串删除一些字符，不改变剩余字符相对位置形成的新的字符串
 
-
+> 双指针加贪心一次遍历即可
 
 ```c++
 bool isSubsequence(string s, string t)
 {
+    int s_length = s.size();
+    int t_length = t.size();
     int i = 0; //用于遍历s
     int j = 0; //用于遍历t
-    for(int i = 0; i < s.size(); i++){
-        for(;j<t.size();j++){}
+    while(i < s_length && j < t_length) {
+        if(s[i] == t[j]) {  // 当下t匹配当下s字符
+            i++;
+        }
+        else
+            j++;  // 当下字符不匹配，继续在 t 中向后寻找
     }
+    if(i == s_length)
+        return true;
+    return false;
 }
 ```
