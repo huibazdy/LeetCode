@@ -11,7 +11,7 @@ bool isPalindrome(string s)
     string r;  // 用于存储筛选过后的字符串
     for(char ch : s){
         if(isalnum(ch)) // 判断是否为字母或数字
-            r.push_back(tolower(ch);  // 转为小写字母并插入新字符串
+            r.push_back(tolower(ch));  // 转为小写字母并插入新字符串
     }
     
     int i = 0;
@@ -45,15 +45,63 @@ bool isPalindrome(string s)
 
 * 子序列：原字符串删除一些字符，不改变剩余字符相对位置形成的新的字符串
 
-
+> 双指针加贪心一次遍历即可
 
 ```c++
 bool isSubsequence(string s, string t)
 {
+    int s_length = s.size();
+    int t_length = t.size();
     int i = 0; //用于遍历s
     int j = 0; //用于遍历t
-    for(int i = 0; i < s.size(); i++){
-        for(;j<t.size();j++){}
+    while(i < s_length && j < t_length) {
+        if(s[i] == t[j]) {  // 当下t匹配当下s字符
+            i++;
+        }
+        else
+            j++;  // 当下字符不匹配，继续在 t 中向后寻找
     }
+    if(i == s_length)
+        return true;
+    return false;
 }
+```
+
+
+
+# 42 接雨水
+
+>构造前缀数组与后缀数组来确定每个“桶”的左右“边”，从而计算出每个“桶”接雨水的容积
+
+```c++
+class Solution {
+public:
+    int trap(vector<int>& height) {
+		int n = height.size();
+        
+        vector<int> pre_max(n);   // 前缀最大值数组        
+        pre_max[0] = height[0];
+        for(int i = 1; i < n; i++)
+            pre_max[i] = max(pre_max[i-1], height[i]);
+        
+        vector<int> suf_max(n);  // 后缀最大值数组
+        suf_max[n-1] = height[n-1];
+        for(int j = n-2; j >= 0; j--)
+            suf_max[j] = max(suf_max[j+1], height[j]);
+        
+        int ans = 0;
+        for(int i = 0; i < n; i++)
+            ans += min(pre_max[i], suf_max[j]) - height[i]; // “桶”高度即容积
+        
+        return ans;
+    }
+};
+```
+
+时间复杂度：`O(n)`
+空间复杂度：`O(n)`
+
+可以进一步优化空间复杂度，利用相向双指针？
+
+```c++
 ```
