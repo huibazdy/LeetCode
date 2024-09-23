@@ -66,3 +66,42 @@ bool isSubsequence(string s, string t)
     return false;
 }
 ```
+
+
+
+# 42 接雨水
+
+>构造前缀数组与后缀数组来确定每个“桶”的左右“边”，从而计算出每个“桶”接雨水的容积
+
+```c++
+class Solution {
+public:
+    int trap(vector<int>& height) {
+		int n = height.size();
+        
+        vector<int> pre_max(n);   // 前缀最大值数组        
+        pre_max[0] = height[0];
+        for(int i = 1; i < n; i++)
+            pre_max[i] = max(pre_max[i-1], height[i]);
+        
+        vector<int> suf_max(n);  // 后缀最大值数组
+        suf_max[n-1] = height[n-1];
+        for(int j = n-2; j >= 0; j--)
+            suf_max[j] = max(suf_max[j+1], height[j]);
+        
+        int ans = 0;
+        for(int i = 0; i < n; i++)
+            ans += min(pre_max[i], suf_max[j]) - height[i]; // “桶”高度即容积
+        
+        return ans;
+    }
+};
+```
+
+时间复杂度：`O(n)`
+空间复杂度：`O(n)`
+
+可以进一步优化空间复杂度，利用相向双指针？
+
+```c++
+```
