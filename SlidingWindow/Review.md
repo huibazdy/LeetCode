@@ -19,7 +19,7 @@
 
 
 
-> 思路：滑动窗口
+> 思路：由连续子数组联想到——滑动窗口
 
 1. 向右枚举窗口右端点，若和小于 7 ，则向右一直扩展窗口；
 2. 若某一刻大于 7 ，则缩小左端点（因为由于是正整数数组，继续右扩只会增大窗口和）；
@@ -35,6 +35,30 @@ public:
 		int n = nums.size();
         if(n == 1)
             return nums[0] == target ? 1 : 0;
+        int ans = n+1;
+        int winL = 0;
+        int sum = 0;
+        for(int winR = 0; winR < n; winR++) {
+            sum += nums[winR];
+            while(sum >= target){
+                ans = min(ans,winR-winL+1);
+                sum -= nums[winL++];//左端点右移
+            }
+        }
+        return ans<=n ? ans : 0;
+    }
+};
+```
+
+最初写法：
+
+```c++
+class Solution {
+public:
+    int minSubArrayLen(int target, vector<int>& nums) {
+        int n = nums.size();
+        if(n == 1)
+            return nums[0] == target ? 1 : 0;
         int ans = 0;
         int winL = 0;
         int winR = 1;
@@ -47,11 +71,11 @@ public:
                 sum += nums[i];
             if(sum < target)
                 winR++;
-            else {
+        	else{
                 int tmp = winR - winL + 1;
                 if(ans == 0)
                     ans = tmp;
-                ans = min(ans,
+                ans = min(ans,tmp);
                 if(sum > target)
                     winL++;
                 else
