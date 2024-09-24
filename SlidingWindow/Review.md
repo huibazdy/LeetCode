@@ -116,3 +116,22 @@ public:
 };
 ```
 
+
+
+## 串联所有单词的子串
+
+给定一个字符串`s`和一个字符串数组`words`，数组中所有字符串**长度相同**。`s`中的串联子串指一个包含`words`中所有字符串以任意顺序排列起来的子串。返回串联子串在`s`中的起始索引。
+
+【例】
+输入：s = "barfoothefoobarman"， words = ["foo","bar"]
+输出：[0, 9]
+
+```c++
+class Solution {
+public:
+    vector<int> findSubstring(string s, vector<string>& words) {
+		
+    }
+};
+```
+
