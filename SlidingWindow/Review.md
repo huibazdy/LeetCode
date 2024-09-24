@@ -7,83 +7,44 @@
 
 
 
-【例 1】
+【例】
 输入：[2, 3, 1, 2, 4, 3]，target = 7
 输出：2
 
 
 
-【例 2】
-输入：[1, 4, 4]，target = 4
-输出：1
-
-
-
 > 思路：由连续子数组联想到——滑动窗口
 
-1. 向右枚举窗口右端点，若和小于 7 ，则向右一直扩展窗口；
-2. 若某一刻大于 7 ，则缩小左端点（因为由于是正整数数组，继续右扩只会增大窗口和）；
-3. 持续缩小左端点会有两种情况：
-   * 窗口和小于 7 ，此时继续向右扩展右端点；
-   * 窗口和等于 7 ，此时保存长度为最短长度；
-4. 若左端点还没到最后元素，继续右端点右扩，并持续更新保存的满足条件的最短长度
+1. 向右依次往窗口中添加元素，若和小于 7 ，则向右一直扩展窗口；
+2. 若某一刻窗口内元素和大于等于 7 ，更新满足条件的窗口大小（ans）；
+3. 右移左边界，尝试找到满足条件的更小窗口；
+4. 若步骤 3 后发现窗口内元素和依旧满足条件，继续更新窗口大小；
+5. 若步骤 3 后发现窗口内元素和不再满足条件，继续更右移右边界；
+6. 持续以上步骤，直到窗口右边界达到数组最右端；
 
 ```c++
 class Solution {
 public:
     int minSubArrayLen(int target, vector<int>& nums) {
 		int n = nums.size();
-        if(n == 1)
-            return nums[0] == target ? 1 : 0;
-        int ans = n+1;
-        int winL = 0;
-        int sum = 0;
+        int ans = n+1;   // 将 ans 初始化为超过数组长度的值，用于返回判断
+        int winL = 0;    // 滑动窗口的左边界
+        int sum = 0;     // 记录窗口内所有元素和
         for(int winR = 0; winR < n; winR++) {
-            sum += nums[winR];
+            sum += nums[winR];  // 窗口内元素和利用 nums[winR] 逐次添加
             while(sum >= target){
-                ans = min(ans,winR-winL+1);
-                sum -= nums[winL++];//左端点右移
+                ans = min(ans,winR-winL+1);  // 若存在满足条件的更小窗口，更新 ans
+                sum -= nums[winL++];         // 左边界右移，试图寻找更小窗口，同时更新 sum
             }
         }
-        return ans<=n ? ans : 0;
+        return ans == n+1 ? 0 : ans;
     }
 };
 ```
 
-最初写法：
+执行结果：
 
-```c++
-class Solution {
-public:
-    int minSubArrayLen(int target, vector<int>& nums) {
-        int n = nums.size();
-        if(n == 1)
-            return nums[0] == target ? 1 : 0;
-        int ans = 0;
-        int winL = 0;
-        int winR = 1;
-        while(winL < n && winR < n){
-            if(winL == winR) {
-                return nums[winL] == target ? 1 : 0;
-            }
-            int sum = 0;
-            for(int i = winL; i <= winR; i++)
-                sum += nums[i];
-            if(sum < target)
-                winR++;
-        	else{
-                int tmp = winR - winL + 1;
-                if(ans == 0)
-                    ans = tmp;
-                ans = min(ans,tmp);
-                if(sum > target)
-                    winL++;
-                else
-                	winR++;
-            }
-        }
-        return ans;
-    }
-};
-```
+<img src="https://raw.githubusercontent.com/huibazdy/TyporaPicture/main/202409241141341.png" alt="image-20240924114105268" style="zoom: 33%;" />
 
+> 【**注意**】
+> 一开始，ans 初始化为一个超过数组长度的值，目的是为了在返回结果时判断 ans 是否被更新，如果没被更新，且滑动窗口的长度不可能为 ans，就代表不存在符合条件的子数组，需要返回 0 
