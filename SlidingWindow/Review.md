@@ -118,20 +118,143 @@ public:
 
 
 
+## 找到字符串中所有字母异位词
+
+给定字符串`s`和`p`，找到`s`中所有`p`的异位词的子串，返回这些子串的索引，不用考虑答案顺序。注意，两个字符串只包含小写字母。
+
+【例 1】
+输入：s = "cbaebabacd"， p = "abc"
+输出：[0, 6]
+
+【例 2】
+输入：s = "abab"，p = "ab"
+输出：[0, 1, 2]
+
+> 【**思路**】
+> 长度固定的滑动窗口来遍历`s`，一直判断窗口内子串是否为`p`的异位词，知道窗口右端点到达`s`的右边界。
+
+```c++
+class Solution {
+public:
+    // 编写判断是否为异位词的函数
+    bool isAnagrams(int hash_s[],int hash_t[]) {
+        for(int i = 'a'; i < 'z'; i++){
+            if(hash_s[i] != hash_t[i])
+                return false;
+        }
+        return true;
+    }
+    
+    vector<int> findAnagrams(string s, string p) {
+        vector<int> ans;     // 结果数组
+		int m = p.length();  // 窗口长度
+        int hash_p[128];       // 创建 p 的哈希表
+        for(char c : p)
+            hash_p[c]++;
+        int winL = 0;        // 窗口左边界
+        int winR = m -1;     // 窗口右边界
+        int hash_s[128];     // 创建窗口内子串的哈希表
+        for(int i = winL; i <= winR; i++)  // 窗口内子串放入 hash
+                hash_s[s[i]]++;
+        while(winR < s.length()){
+            if(isAnagrams(hash_s,hash_p)){ // 子串是 p 的异位词
+            	ans.push_back(winL);       // 记录当前子串起始索引 winL
+                // 向后移动窗口
+                hash_s[s[winL]]--;
+                winL++;
+                winR++;
+                hash_s[s[winR]]++;
+            }
+            else {    // 向后移动窗口
+                hash_s[s[winL]]--;
+                winL++;
+                winR++;
+                hash_s[s[winR]]++;
+            }
+        }
+        return ans;
+    }
+}；
+```
+
+执行结果：
+![image-20240925160512432](https://raw.githubusercontent.com/huibazdy/TyporaPicture/main/202409251605586.png)
+
+
+
 ## 串联所有单词的子串
 
-给定一个字符串`s`和一个字符串数组`words`，数组中所有字符串**长度相同**。`s`中的串联子串指一个包含`words`中所有字符串以任意顺序排列起来的子串。返回串联子串在`s`中的起始索引。
+给定一个字符串`s`和一个字符串数组`words`，数组中所有字符串**长度相同**。`s`中的串联子串指一个包含`words`中所有字符串以任意顺序排列起来的子串。返回串联子串在`s`中的起始索引。注意，`words[i]`和`s`都由小写字母组成。
 
 【例】
 输入：s = "barfoothefoobarman"， words = ["foo","bar"]
 输出：[0, 9]
 
+
+
+> 【思路】
+> 借助一个滑动窗口来遍历`s`寻找子串，窗口大小为`words.size() * words[0].length()`。
+>
+> 1. 用 word 长度划分子串为多个word；
+> 2. 比较子串中word和`words`中word的出现频次是否相同
+> 3. 实际上就是判断窗口内子串是否为`words`的“异位词”，只不过词的元素从字符变成了word
+
+
+
 ```c++
 class Solution {
 public:
+    bool isEqualHash(map<string,int> h1, map<string,int> h2) {
+        if(h1.size() != h2.size())  // 比较哈希中出现的单词数
+            return false;
+        map<string,int>::iterator iter1 = h1.begin();
+        while(iter1 != h1.end()){
+            if(h2.find(iter1->first) == h2.end())
+                return false;
+            if(h2.find(iter1->first)->second != iter1->second)
+                return false;
+            iter1++;
+        }
+        return true;
+    }
+    
     vector<int> findSubstring(string s, vector<string>& words) {
-		
+        vector<int> ans;
+		int word_l = words[0].length();           // 单词长度
+        int word_n = words.size();                // 单词数量
+        int window_l = word_n * word_l;           // 滑动窗口长度
+        
+        // 建立 words 的哈希表，统计各个单词及其出现频次
+        map<string,int> h1;   // 利用 map 自动排序的性质，利于之后比较两个哈希
+        for(int i = 0; i < word_n; i++) {
+            if(h1.find(words[i]) == h1.end())
+                h1.insert(make_pair(words[i],1));
+            h1[words[i]]++;
+        }
+        
+        // 滑动窗口遍历子串，并使用 word_l 对子串进行划分，同时用哈希表 h2 记录
+        int L = 0;
+        int R = window_l - 1;
+        map<string,int> h2;   // 创建记录子串的哈希表 h2
+        while(R < s.length()) {
+            string win = s.substr(L,R);  // 窗口内子串
+            string word;                 // 记录划分结果
+            for(int i = 0; i < word_n; i++) { // 划分得到 word_n 个单词
+                word = win.substr(i*word_l,i*word_l+word_l-1); // 划分得到的某个单词
+                if(h2.find(word) == h2.end())  // 单词加入哈希
+                	h2.insert(make_pair(word,1));
+                else
+                	h2[word]++;
+            }
+            if(isEqualHash(h2,h1))  // 判断子串划分的哈希表与 words 哈希是否相等
+                ans.push_back(L);
+            // 更新窗口
+            L++;
+            R++;
+            // 清空哈希表 h2
+            h2.clear();
+        }
+        return ans;
     }
 };
 ```
-
