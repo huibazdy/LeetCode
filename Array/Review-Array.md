@@ -57,7 +57,7 @@ public:
         int slow = 2;
         int fast = 2;
         while(fast < nums.size()) {
-            if(nums[fast] != nums[slow-2])
+            if(nums[fast] != nums[slow-2])  // 遇到重复次数不超过 2 的元素需要保留
                 nums[slow++] = nums[fast];
             fast++;
         }
