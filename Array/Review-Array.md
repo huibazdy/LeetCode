@@ -65,3 +65,63 @@ public:
     }
 };
 ```
+
+
+
+## 最长公共前缀
+
+找出字符串数组中的最长公共前缀，若不存在，则返回空字符串。数组元素中只包含小写字母。
+
+【例】
+输入：strs = ["flower","flow","flight"]
+输出："fl"
+
+> 思路
+
+1. 将整个字符串数组看成一个矩阵（行数为：`strs.size()`，列数为其中数组中元素的最大长度）；
+2. 从左至右遍历矩阵中每一列；
+3. 设遍历到第**`j`**列，从上至下遍历这一列的字母；
+4. 设遍历该列字母到第**`i`**行，此时遍历到的字母是`strs[i][j]`；
+5. 如果`j`已经是`strs[i]`的长度（这一行已经遍历完），或者出现了不同的字符（`strs[i][j]`不等于`strs[0][j]`），返回的最长子公共前缀就是`strs[0]`的前`j`个字符组成的前缀；
+6. 若中途未返回，说明最长公共前缀就是`strs[0]`
+
+```c++
+class Solution {
+public:
+    string longestCommonPrefix(vector<string>& strs) {
+		int rows = strs.size();  //矩阵行数
+        
+    }
+};
+```
+
+
+
+
+
+```c++
+class Solution {
+public:
+    string longestCommonPrefix(vector<string>& strs) {
+		sort(strs.begin(), strs.end());  // 对字符串数组排序
+        for(int j = 0; j < strs[0].length(); j++){ // 遍历矩阵的有效列
+            for(int i = 0; i < strs.size(); i++) { // 遍历行
+                if(strs[i][j] != strs[0][j])
+                    return strs[0].substr(0,j);
+                continue;
+            }
+        }
+        return strs[0];
+    }
+};
+```
+
+运行结果：
+
+<img src="C:\Users\zdy\AppData\Roaming\Typora\typora-user-images\image-20241011174427473.png" alt="image-20241011174427473" style="zoom: 50%;" />
+
+> 字符串常用函数之：`substr()` 的两种使用方法：
+>
+> 1. `str.substr(start_index, cnt)`，起始位置加复制数量
+> 2. `str.substr(start_index)`，复制起始位置到字符串结束位置
+
